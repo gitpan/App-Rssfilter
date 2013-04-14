@@ -11,20 +11,7 @@ use ExtUtils::MakeMaker 6.30;
 my %WriteMakefileArgs = (
   "ABSTRACT" => "remove clutter from your news feeds",
   "AUTHOR" => "Daniel Holz <dgholz\@gmail.com>",
-  "BUILD_REQUIRES" => {
-    "Carp::Always" => 0,
-    "File::Temp" => 0,
-    "Mojo::Message::Response" => 0,
-    "Mojo::Transaction" => 0,
-    "Moose" => 0,
-    "Test::Exception" => 0,
-    "Test::MockObject" => 0,
-    "Test::More" => 0,
-    "Test::Most" => 0,
-    "Test::Routine" => 0,
-    "Test::Routine::Util" => 0,
-    "namespace::autoclean" => 0
-  },
+  "BUILD_REQUIRES" => {},
   "CONFIGURE_REQUIRES" => {
     "ExtUtils::MakeMaker" => "6.30"
   },
@@ -52,7 +39,7 @@ my %WriteMakefileArgs = (
     "Moo::Role" => 0,
     "Path::Class" => 0,
     "Path::Class::Dir" => 0,
-    "Path::Class::File" => 0,
+    "Path::Class::File" => "0.26",
     "Scalar::Util" => 0,
     "Try::Tiny" => 0,
     "YAML::XS" => 0,
@@ -61,12 +48,38 @@ my %WriteMakefileArgs = (
     "strict" => 0,
     "warnings" => 0
   },
-  "VERSION" => "0.0.1_1",
+  "TEST_REQUIRES" => {
+    "File::Temp" => 0,
+    "Mojo::Message::Response" => 0,
+    "Mojo::Transaction" => 0,
+    "Moose" => 0,
+    "Test::Exception" => 0,
+    "Test::MockObject" => 0,
+    "Test::More" => 0,
+    "Test::Most" => 0,
+    "Test::Routine" => 0,
+    "Test::Routine::Util" => 0,
+    "namespace::autoclean" => 0
+  },
+  "VERSION" => "0.0.1_2",
   "test" => {
     "TESTS" => "t/*.t t/app/rssfilter/*.t t/app/rssfilter/feed/*.t t/app/rssfilter/filter/*.t t/app/rssfilter/group/*.t t/app/rssfilter/match/*.t"
   }
 );
 
+
+unless ( eval { ExtUtils::MakeMaker->VERSION(6.63_03) } ) {
+  my $tr = delete $WriteMakefileArgs{TEST_REQUIRES};
+  my $br = $WriteMakefileArgs{BUILD_REQUIRES};
+  for my $mod ( keys %$tr ) {
+    if ( exists $br->{$mod} ) {
+      $br->{$mod} = $tr->{$mod} if $tr->{$mod} > $br->{$mod};
+    }
+    else {
+      $br->{$mod} = $tr->{$mod};
+    }
+  }
+}
 
 unless ( eval { ExtUtils::MakeMaker->VERSION(6.56) } ) {
   my $br = delete $WriteMakefileArgs{BUILD_REQUIRES};

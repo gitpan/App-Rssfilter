@@ -10,7 +10,7 @@ package App::Rssfilter::Cmd {
     use App::Cmd::Setup -app;
 };
 {
-  $App::Rssfilter::Cmd::VERSION = '0.0.1_1';
+  $App::Rssfilter::Cmd::VERSION = '0.0.1_2';
 }
 
 1;
@@ -25,7 +25,7 @@ App::Rssfilter::Cmd - App::Rssfilter's App::Cmd
 
 =head1 VERSION
 
-version 0.0.1_1
+version 0.0.1_2
 
 =head1 AUTHOR
 

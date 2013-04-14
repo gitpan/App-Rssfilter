@@ -109,7 +109,7 @@ package App::Rssfilter::Feed {
 
 1;
 {
-  $App::Rssfilter::Feed::VERSION = '0.0.1_1';
+  $App::Rssfilter::Feed::VERSION = '0.0.1_2';
 }
 
 __END__
@@ -122,7 +122,7 @@ App::Rssfilter::Feed - Get the latest or previous version of an RSS feed
 
 =head1 VERSION
 
-version 0.0.1_1
+version 0.0.1_2
 
 =head1 SYNOPSIS
 

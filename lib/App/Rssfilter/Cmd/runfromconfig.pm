@@ -46,7 +46,7 @@ package App::Rssfilter::Cmd::runfromconfig {
     }
 };
 {
-  $App::Rssfilter::Cmd::runfromconfig::VERSION = '0.0.1_1';
+  $App::Rssfilter::Cmd::runfromconfig::VERSION = '0.0.1_2';
 }
 
 1;
@@ -61,7 +61,7 @@ App::Rssfilter::Cmd::runfromconfig - fetch feeds and constrain with rules, all f
 
 =head1 VERSION
 
-version 0.0.1_1
+version 0.0.1_2
 
 =head1 SYNOPSIS
 

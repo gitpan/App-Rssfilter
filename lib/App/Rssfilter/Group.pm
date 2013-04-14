@@ -111,9 +111,11 @@ package App::Rssfilter::Group {
 
 }
 
+
+
 1;
 {
-  $App::Rssfilter::Group::VERSION = '0.0.1_1';
+  $App::Rssfilter::Group::VERSION = '0.0.1_2';
 }
 
 __END__
@@ -126,7 +128,7 @@ App::Rssfilter::Group - associate one or more rules with more than one feed
 
 =head1 VERSION
 
-version 0.0.1_1
+version 0.0.1_2
 
 =head1 SYNOPSIS
 
@@ -258,6 +260,18 @@ Adds C<$app_rssfilter_feed> (or creates a new App::RssFilter::Feed instance from
     my $feed = $group->feed( $name );
 
 Returns the last feed added to this group whose name is C<$name>, or C<undef> if no matching feed.
+
+=head2 from_hash
+
+    my $group = App::Rssfilter::Group::from_hash( %config );
+
+Returns a new instance of this class with the feeds, rules, and subgroups specifed in C<%config>. This method is provided by L<App::Rssfilter::FromHash/from_hash>, which has additional documentation & examples.
+
+=head2 from_yaml
+
+    my $group = App::Rssfilter::Group::from_yaml( $yaml_config );
+
+Returns a new instance of this class with the feeds, rules, and subgroups specifed in C<$yaml_config>. This method is provided by L<App::Rssfilter::FromYaml/from_yaml>, which has additional documentation & examples.
 
 =head1 SEE ALSO
 

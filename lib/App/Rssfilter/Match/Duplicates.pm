@@ -23,7 +23,7 @@ package App::Rssfilter::Match::Duplicates {
 
 1;
 {
-  $App::Rssfilter::Match::Duplicates::VERSION = '0.0.1_1';
+  $App::Rssfilter::Match::Duplicates::VERSION = '0.0.1_2';
 }
 
 __END__
@@ -36,7 +36,7 @@ App::Rssfilter::Match::Duplicates - match an RSS item which has been seen before
 
 =head1 VERSION
 
-version 0.0.1_1
+version 0.0.1_2
 
 =head1 SYNOPSIS
 

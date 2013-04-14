@@ -19,7 +19,7 @@ package App::Rssfilter::FromYaml {
 
 };
 {
-  $App::Rssfilter::FromYaml::VERSION = '0.0.1_1';
+  $App::Rssfilter::FromYaml::VERSION = '0.0.1_2';
 }
 
 1;
@@ -34,7 +34,7 @@ App::Rssfilter::FromYaml - create App::Rssfilter objects from YAML configuration
 
 =head1 VERSION
 
-version 0.0.1_1
+version 0.0.1_2
 
 =head1 SYNOPSIS
 

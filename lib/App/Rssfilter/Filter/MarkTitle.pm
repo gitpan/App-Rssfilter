@@ -16,7 +16,7 @@ package App::Rssfilter::Filter::MarkTitle {
 
 1;
 {
-  $App::Rssfilter::Filter::MarkTitle::VERSION = '0.0.1_1';
+  $App::Rssfilter::Filter::MarkTitle::VERSION = '0.0.1_2';
 }
 
 __END__
@@ -29,7 +29,7 @@ App::Rssfilter::Filter::MarkTitle - add some text to the title of an RSS item
 
 =head1 VERSION
 
-version 0.0.1_1
+version 0.0.1_2
 
 =head1 SYNOPSIS
 

@@ -3,8 +3,6 @@ MANIFEST
 META.yml
 Makefile.PL
 README
-README.pod
-Rssfilter.yaml
 bin/rssfilter
 dist.ini
 lib/App/Rssfilter.pm
@@ -23,7 +21,6 @@ lib/App/Rssfilter/Match/BbcSports.pm
 lib/App/Rssfilter/Match/Category.pm
 lib/App/Rssfilter/Match/Duplicates.pm
 lib/App/Rssfilter/Rule.pm
-t.pl
 t/app/rssfilter/feed/storage.t
 t/app/rssfilter/feed/storage_no_name.t
 t/app/rssfilter/feed_ctor.t

@@ -11,7 +11,7 @@ package App::Rssfilter::Feed::Storage {
     use Moo;
     with 'App::Rssfilter::Logger';
     use Mojo::DOM;
-    use Path::Class::File;
+    use Path::Class::File 0.26;
     use Path::Class::Dir;
     use HTTP::Date;
 
@@ -101,7 +101,7 @@ package App::Rssfilter::Feed::Storage {
 
 };
 {
-  $App::Rssfilter::Feed::Storage::VERSION = '0.0.1_1';
+  $App::Rssfilter::Feed::Storage::VERSION = '0.0.1_2';
 }
 
 1;
@@ -116,7 +116,7 @@ App::Rssfilter::Feed::Storage - load and save RSS feeds as files
 
 =head1 VERSION
 
-version 0.0.1_1
+version 0.0.1_2
 
 =head1 SYNOPSIS
 

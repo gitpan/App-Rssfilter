@@ -16,7 +16,7 @@ package App::Rssfilter::Filter::DeleteItem {
 
 1;
 {
-  $App::Rssfilter::Filter::DeleteItem::VERSION = '0.0.1_1';
+  $App::Rssfilter::Filter::DeleteItem::VERSION = '0.0.1_2';
 }
 
 __END__
@@ -29,7 +29,7 @@ App::Rssfilter::Filter::DeleteItem - remove an RSS item from its channel
 
 =head1 VERSION
 
-version 0.0.1_1
+version 0.0.1_2
 
 =head1 SYNOPSIS
 

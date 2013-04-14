@@ -56,7 +56,7 @@ package App::Rssfilter::FromHash {
 
 };
 {
-  $App::Rssfilter::FromHash::VERSION = '0.0.1_1';
+  $App::Rssfilter::FromHash::VERSION = '0.0.1_2';
 }
 
 1;
@@ -71,7 +71,7 @@ App::Rssfilter::FromHash - a role for creating App::Rssfilter objects from a con
 
 =head1 VERSION
 
-version 0.0.1_1
+version 0.0.1_2
 
 =head1 SYNOPSIS
 

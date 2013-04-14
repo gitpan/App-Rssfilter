@@ -8,7 +8,7 @@ package App::Rssfilter {
     extends 'App::Rssfilter::Group';
 };
 {
-  $App::Rssfilter::VERSION = '0.0.1_1';
+  $App::Rssfilter::VERSION = '0.0.1_2';
 }
 
 1;
@@ -23,7 +23,7 @@ App::Rssfilter - remove clutter from your news feeds
 
 =head1 VERSION
 
-version 0.0.1_1
+version 0.0.1_2
 
 =head1 SYNOPSIS
 
