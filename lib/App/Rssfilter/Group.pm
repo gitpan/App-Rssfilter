@@ -1,122 +1,119 @@
 # ABSTRACT: associate one or more rules with more than one feed
 
-
 use strict;
 use warnings;
-use feature qw< :5.14 >;
 
-package App::Rssfilter::Group {
-    use Moo;
-    with 'App::Rssfilter::Logger';
-    with 'App::Rssfilter::FromHash';
-    with 'App::Rssfilter::FromYaml';
-    use Method::Signatures;
 
-    method BUILDARGS( @options ) {
-        if( 1 == @options ) {
-            unshift @options, 'name';
-        }
-        return { @options };
+package App::Rssfilter::Group;
+{
+  $App::Rssfilter::Group::VERSION = '0.0.1_3'; # TRIAL
+}
+use Moo;
+with 'App::Rssfilter::Logger';
+with 'App::Rssfilter::FromHash';
+with 'App::Rssfilter::FromYaml';
+use Method::Signatures;
+
+method BUILDARGS( @options ) {
+    if( 1 == @options ) {
+        unshift @options, 'name';
+    }
+    return { @options };
+}
+
+
+method update( ArrayRef :$rules = [], :$storage = $self->storage ) {
+    my $child_storage = $storage->path_push( $self->name );
+    my @rules = map { @{ $_ } } $rules, $self->rules;
+    $self->logger->debugf( 'filtering feeds in %s', $self->name );
+    $_->update( rules => \@rules, storage => $child_storage ) for @{ $self->groups };
+    $_->update( rules => \@rules, storage => $child_storage ) for @{ $self->feeds };
+}
+
+
+
+has name => (
+    is => 'ro',
+    default => sub { '.' },
+);
+
+
+has storage => (
+    is => 'ro',
+    default => method { App::Rssfilter::Feed::Storage->new },
+);
+
+
+has groups => (
+    is => 'ro',
+    default => sub { [] },
+);
+
+
+method add_group( $app_rssfilter_group, @group_options ) {
+    use Scalar::Util qw< blessed >;
+    if ( ! blessed( $app_rssfilter_group ) or ! $app_rssfilter_group->isa( 'App::Rssfilter::Group' ) ) {
+        unshift @group_options, $app_rssfilter_group; # restore original @_
+        $app_rssfilter_group = App::Rssfilter::Group->new( @group_options );
     }
 
+    push @{ $self->groups }, $app_rssfilter_group;
+    return $self;
+}
 
-    method update( ArrayRef :$rules = [], :$storage = $self->storage ) {
-        my $child_storage = $storage->path_push( $self->name );
-        my @rules = map { @{ $_ } } $rules, $self->rules;
-        $self->logger->debugf( 'filtering feeds in %s', $self->name );
-        $_->update( rules => \@rules, storage => $child_storage ) for @{ $self->groups };
-        $_->update( rules => \@rules, storage => $child_storage ) for @{ $self->feeds };
+
+method group( $name ) {
+    use List::Util qw< first >;
+    first { $_->name eq $name } reverse @{ $self->groups };
+}
+
+
+has rules => (
+    is => 'ro',
+    default => sub { [] },
+);
+
+
+method add_rule( $app_rssfilter_rule, @rule_options ) {
+    use Scalar::Util qw< blessed >;
+    if ( ! blessed( $app_rssfilter_rule ) or ! $app_rssfilter_rule->isa( 'App::Rssfilter::Rule' ) ) {
+        unshift @rule_options, $app_rssfilter_rule; # restore original @_
+        use App::Rssfilter::Rule;
+        $app_rssfilter_rule = App::Rssfilter::Rule->new( @rule_options );
     }
 
+    push @{ $self->rules }, $app_rssfilter_rule;
+    return $self;
+}
 
 
-    has name => (
-        is => 'ro',
-        default => sub { '.' },
-    );
+has feeds => (
+    is => 'ro',
+    default => sub { [] },
+);
 
 
-    has storage => (
-        is => 'ro',
-        default => method { App::Rssfilter::Feed::Storage->new },
-    );
-
-
-    has groups => (
-        is => 'ro',
-        default => sub { [] },
-    );
-
-
-    method add_group( $app_rssfilter_group, @group_options ) {
-        use Scalar::Util qw< blessed >;
-        if ( ! blessed( $app_rssfilter_group ) or ! $app_rssfilter_group->isa( 'App::Rssfilter::Group' ) ) {
-            unshift @group_options, $app_rssfilter_group; # restore original @_
-            $app_rssfilter_group = App::Rssfilter::Group->new( @group_options );
-        }
-
-        push $self->groups, $app_rssfilter_group;
-        return $self;
+method add_feed( $app_rssfilter_feed, @feed_options ) {
+    use Scalar::Util qw< blessed >;
+    if ( ! blessed( $app_rssfilter_feed ) or ! $app_rssfilter_feed->isa( 'App::Rssfilter::Feed' ) ) {
+        unshift @feed_options, $app_rssfilter_feed; # restore original @_
+        use App::Rssfilter::Feed;
+        $app_rssfilter_feed = App::Rssfilter::Feed->new( @feed_options );
     }
 
-
-    method group( $name ) {
-        use List::Util qw< first >;
-        first { $_->name eq $name } reverse @{ $self->groups };
-    }
+    push @{ $self->feeds }, $app_rssfilter_feed;
+    return $app_rssfilter_feed;
+}
 
 
-    has rules => (
-        is => 'ro',
-        default => sub { [] },
-    );
-
-
-    method add_rule( $app_rssfilter_rule, @rule_options ) {
-        use Scalar::Util qw< blessed >;
-        if ( ! blessed( $app_rssfilter_rule ) or ! $app_rssfilter_rule->isa( 'App::Rssfilter::Rule' ) ) {
-            unshift @rule_options, $app_rssfilter_rule; # restore original @_
-            use App::Rssfilter::Rule;
-            $app_rssfilter_rule = App::Rssfilter::Rule->new( @rule_options );
-        }
-
-        push $self->rules, $app_rssfilter_rule;
-        return $self;
-    }
-
-
-    has feeds => (
-        is => 'ro',
-        default => sub { [] },
-    );
-
-
-    method add_feed( $app_rssfilter_feed, @feed_options ) {
-        use Scalar::Util qw< blessed >;
-        if ( ! blessed( $app_rssfilter_feed ) or ! $app_rssfilter_feed->isa( 'App::Rssfilter::Feed' ) ) {
-            unshift @feed_options, $app_rssfilter_feed; # restore original @_
-            use App::Rssfilter::Feed;
-            $app_rssfilter_feed = App::Rssfilter::Feed->new( @feed_options );
-        }
-
-        push $self->feeds, $app_rssfilter_feed;
-        return $app_rssfilter_feed;
-    }
-
-
-    method feed( $name ) {
-        use List::Util qw< first >;
-        first { $_->name eq $name } reverse @{ $self->feeds };
-    }
-
+method feed( $name ) {
+    use List::Util qw< first >;
+    first { $_->name eq $name } reverse @{ $self->feeds };
 }
 
 
 
 1;
-{
-  $App::Rssfilter::Group::VERSION = '0.0.1_2';
-}
 
 __END__
 
@@ -128,7 +125,7 @@ App::Rssfilter::Group - associate one or more rules with more than one feed
 
 =head1 VERSION
 
-version 0.0.1_2
+version 0.0.1_3
 
 =head1 SYNOPSIS
 

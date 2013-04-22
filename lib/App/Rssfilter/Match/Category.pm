@@ -1,27 +1,25 @@
-use strict;
-use warnings;
-use feature qw( :5.14 );
-
 # ABSTRACT: match an RSS item by category
 
-
-package App::Rssfilter::Match::Category {
-    use Method::Signatures;
-    use List::MoreUtils qw( any );
+use strict;
+use warnings;
 
 
-    func match ( $item, @bad_cats ) {
-        my @categories = $item->find("category")->pluck( 'text' )->each;
-        my @split_categories = map { ( / \A ( [^:]+ ) ( [:] .* ) \z /xms, $_ ) } @categories;
-        my %cats = map { $_ => 1 } @split_categories;
-        return List::MoreUtils::any { defined $_ } @cats{ @bad_cats };
-    }
+package App::Rssfilter::Match::Category;
+{
+  $App::Rssfilter::Match::Category::VERSION = '0.0.1_3'; # TRIAL
+}
+use Method::Signatures;
+use List::MoreUtils qw( any );
+
+
+func match ( $item, @bad_cats ) {
+    my @categories = $item->find("category")->pluck( 'text' )->each;
+    my @split_categories = map { ( / \A ( [^:]+ ) ( [:] .* ) \z /xms, $_ ) } @categories;
+    my %cats = map { $_ => 1 } @split_categories;
+    return List::MoreUtils::any { defined $_ } @cats{ @bad_cats };
 }
 
 1;
-{
-  $App::Rssfilter::Match::Category::VERSION = '0.0.1_2';
-}
 
 __END__
 
@@ -33,7 +31,7 @@ App::Rssfilter::Match::Category - match an RSS item by category
 
 =head1 VERSION
 
-version 0.0.1_2
+version 0.0.1_3
 
 =head1 SYNOPSIS
 

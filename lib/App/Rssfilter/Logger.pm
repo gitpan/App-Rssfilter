@@ -1,26 +1,23 @@
 # ABSTRACT: adds a logger to a class
 
-
-
 use strict;
 use warnings;
-use feature qw( :5.14 );
-
-package App::Rssfilter::Logger {
-
-    use Moo::Role;
-    use Log::Any;
 
 
-    has 'logger' => (
-        is => 'lazy',
-        default => sub { Log::Any->get_logger() },
-    );
 
-};
+package App::Rssfilter::Logger;
 {
-  $App::Rssfilter::Logger::VERSION = '0.0.1_2';
+  $App::Rssfilter::Logger::VERSION = '0.0.1_3'; # TRIAL
 }
+
+use Moo::Role;
+use Log::Any;
+
+
+has 'logger' => (
+    is => 'lazy',
+    default => sub { Log::Any->get_logger() },
+);
 
 1;
 
@@ -34,7 +31,7 @@ App::Rssfilter::Logger - adds a logger to a class
 
 =head1 VERSION
 
-version 0.0.1_2
+version 0.0.1_3
 
 =head1 SYNOPSIS
 
@@ -55,7 +52,7 @@ C<App::Rssfilter::Logger> is a role that can be composed into any class, and add
 
 =head2 logger
 
-    $receiver->logger->debug( 'cutting down trees' );
+$receiver->logger->debug( 'cutting down trees' );
 
 This is a L<Log::Any> object.
 

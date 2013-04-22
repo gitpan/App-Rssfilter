@@ -1,30 +1,32 @@
-use strict;
-use warnings;
-use feature qw( :5.14 );
-
 # ABSTRACT: match an RSS item which has been seen before
 
-
-package App::Rssfilter::Match::Duplicates {
-    use Method::Signatures;
-    use Try::Tiny;
+use strict;
+use warnings;
 
 
-    func match ( $item ) {
-        state %prev;
-        my $link = try { $item->guid->text =~ s/ [?] .* \z //xmsr } || "";
-        my $url  = try { $item->link->text =~ s/ [?] .* \z //xmsr } || "";
-        my @matchables = grep { $_ ne "" } $link, $url;
-        my $res  = grep { defined } @prev{ @matchables };
-        @prev{ @matchables } = ( 1 ) x @matchables;
-        return 0 < $res;
-    }
+package App::Rssfilter::Match::Duplicates;
+{
+  $App::Rssfilter::Match::Duplicates::VERSION = '0.0.1_3'; # TRIAL
+}
+use Method::Signatures;
+use Try::Tiny;
+
+
+func match ( $item ) {
+    use 5.010;
+    state %prev;
+
+    my @matchables = 
+        map  { s/ [?] .* \z //xms; $_ }
+        grep { $_ ne '' }
+        $item->find( 'guid, link' )->pluck( 'text' )->each;
+
+    my $res = grep { defined } @prev{ @matchables };
+    @prev{ @matchables } = ( 1 ) x @matchables;
+    return 0 < $res;
 }
 
 1;
-{
-  $App::Rssfilter::Match::Duplicates::VERSION = '0.0.1_2';
-}
 
 __END__
 
@@ -36,7 +38,7 @@ App::Rssfilter::Match::Duplicates - match an RSS item which has been seen before
 
 =head1 VERSION
 
-version 0.0.1_2
+version 0.0.1_3
 
 =head1 SYNOPSIS
 

@@ -17,7 +17,7 @@ build_requires:
 configure_requires:
   ExtUtils::MakeMaker: 6.30
 dynamic_config: 0
-generated_by: 'Dist::Zilla version 4.300034, CPAN::Meta::Converter version 2.120921'
+generated_by: 'Dist::Zilla version 4.300034, CPAN::Meta::Converter version 2.130880'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -47,10 +47,11 @@ requires:
   YAML::XS: 0
   constant: 0
   feature: 0
+  perl: 5.010
   strict: 0
   warnings: 0
 resources:
   bugtracker: https://github.com/dgholz/App-Rssfilter/issues
   homepage: https://github.com/dgholz/App-Rssfilter
   repository: https://github.com/dgholz/App-Rssfilter.git
-version: 0.0.1_2
+version: 0.0.1_3

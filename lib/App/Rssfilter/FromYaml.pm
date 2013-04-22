@@ -1,25 +1,22 @@
 # ABSTRACT: create App::Rssfilter objects from YAML configuration
 
-
 use strict;
 use warnings;
-use feature qw( :5.14 );
-
-package App::Rssfilter::FromYaml {
-
-    use Moo::Role;
-    use Method::Signatures;
-    use YAML::XS;
-    requires 'from_hash';
 
 
-    method from_yaml( $config ) {
-        $self->from_hash( Load( $config ) );
-    }
-
-};
+package App::Rssfilter::FromYaml;
 {
-  $App::Rssfilter::FromYaml::VERSION = '0.0.1_2';
+  $App::Rssfilter::FromYaml::VERSION = '0.0.1_3'; # TRIAL
+}
+
+use Moo::Role;
+use Method::Signatures;
+use YAML::XS;
+requires 'from_hash';
+
+
+method from_yaml( $config ) {
+    $self->from_hash( Load( $config ) );
 }
 
 1;
@@ -34,7 +31,7 @@ App::Rssfilter::FromYaml - create App::Rssfilter objects from YAML configuration
 
 =head1 VERSION
 
-version 0.0.1_2
+version 0.0.1_3
 
 =head1 SYNOPSIS
 

@@ -1,23 +1,21 @@
 use strict;
 use warnings;
-use feature qw( :5.14 );
 
 # ABSTRACT: add some text to the title of an RSS item
 
 
-package App::Rssfilter::Filter::MarkTitle {
-    use Method::Signatures;
-
-
-    func filter ( $item, $matcher, $explicit_prefix = $matcher ) {
-        $item->title->replace_content(uc($explicit_prefix) ." - ".$item->title->content_xml);
-    }
-}
-
-1;
+package App::Rssfilter::Filter::MarkTitle;
 {
-  $App::Rssfilter::Filter::MarkTitle::VERSION = '0.0.1_2';
+  $App::Rssfilter::Filter::MarkTitle::VERSION = '0.0.1_3'; # TRIAL
 }
+
+use Method::Signatures;
+
+
+func filter ( $item, $matcher, $explicit_prefix = $matcher ) {
+    $item->title->replace_content(uc($explicit_prefix) ." - ".$item->title->content_xml);
+}
+1;
 
 __END__
 
@@ -29,7 +27,7 @@ App::Rssfilter::Filter::MarkTitle - add some text to the title of an RSS item
 
 =head1 VERSION
 
-version 0.0.1_2
+version 0.0.1_3
 
 =head1 SYNOPSIS
 

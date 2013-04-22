@@ -1,23 +1,21 @@
-use strict;
-use warnings;
-use feature qw( :5.14 );
-
 # ABSTRACT: match an ABC preview RSS item
 
+use strict;
+use warnings;
 
-package App::Rssfilter::Match::AbcPreviews {
-    use Method::Signatures;
+
+package App::Rssfilter::Match::AbcPreviews;
+{
+  $App::Rssfilter::Match::AbcPreviews::VERSION = '0.0.1_3'; # TRIAL
+}
+use Method::Signatures;
 
 
-    func match ( $item ) {
-        return $item->guid->text =~ / [^-] preview /xms and $item->title->text !~ / preview /ixms;
-    }
+func match ( $item ) {
+    return $item->guid->text =~ / [^-] preview /xms and $item->title->text !~ / preview /ixms;
 }
 
 1;
-{
-  $App::Rssfilter::Match::AbcPreviews::VERSION = '0.0.1_2';
-}
 
 __END__
 
@@ -29,7 +27,7 @@ App::Rssfilter::Match::AbcPreviews - match an ABC preview RSS item
 
 =head1 VERSION
 
-version 0.0.1_2
+version 0.0.1_3
 
 =head1 SYNOPSIS
 

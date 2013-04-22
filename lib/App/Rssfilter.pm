@@ -1,15 +1,16 @@
 use strict;
 use warnings;
+
 # ABSTRACT: remove clutter from your news feeds
 
 
-package App::Rssfilter {
-    use Moo;
-    extends 'App::Rssfilter::Group';
-};
+package App::Rssfilter;
 {
-  $App::Rssfilter::VERSION = '0.0.1_2';
+  $App::Rssfilter::VERSION = '0.0.1_3'; # TRIAL
 }
+
+use Moo;
+extends 'App::Rssfilter::Group';
 
 1;
 
@@ -23,7 +24,7 @@ App::Rssfilter - remove clutter from your news feeds
 
 =head1 VERSION
 
-version 0.0.1_2
+version 0.0.1_3
 
 =head1 SYNOPSIS
 

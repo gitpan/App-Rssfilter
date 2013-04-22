@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 
-
+use 5.010;
 
 use ExtUtils::MakeMaker 6.30;
 
@@ -61,7 +61,7 @@ my %WriteMakefileArgs = (
     "Test::Routine::Util" => 0,
     "namespace::autoclean" => 0
   },
-  "VERSION" => "0.0.1_2",
+  "VERSION" => "0.0.1_3",
   "test" => {
     "TESTS" => "t/*.t t/app/rssfilter/*.t t/app/rssfilter/feed/*.t t/app/rssfilter/filter/*.t t/app/rssfilter/group/*.t t/app/rssfilter/match/*.t"
   }

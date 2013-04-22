@@ -1,23 +1,21 @@
 use strict;
 use warnings;
-use feature qw( :5.14 );
 
 # ABSTRACT: remove an RSS item from its channel
 
 
-package App::Rssfilter::Filter::DeleteItem {
-    use Method::Signatures;
-
-
-    func filter ( $item, $matcher = 'no reason' ) {
-        $item->replace(q{});
-    }
-}
-
-1;
+package App::Rssfilter::Filter::DeleteItem;
 {
-  $App::Rssfilter::Filter::DeleteItem::VERSION = '0.0.1_2';
+  $App::Rssfilter::Filter::DeleteItem::VERSION = '0.0.1_3'; # TRIAL
 }
+
+use Method::Signatures;
+
+
+func filter ( $item, $matcher = 'no reason' ) {
+    $item->replace(q{});
+}
+1;
 
 __END__
 
@@ -29,7 +27,7 @@ App::Rssfilter::Filter::DeleteItem - remove an RSS item from its channel
 
 =head1 VERSION
 
-version 0.0.1_2
+version 0.0.1_3
 
 =head1 SYNOPSIS
 
@@ -81,7 +79,7 @@ This module will remove an RSS item from its channel. Actually, it will remove a
 
 =head2 filter
 
-   App::Rssfilter::Filter::DeleteItem::filter( $item, $matcher );
+    App::Rssfilter::Filter::DeleteItem::filter( $item, $matcher );
 
 Removes C<$item> from its parent and discards it.
 

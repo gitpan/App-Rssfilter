@@ -1,116 +1,114 @@
+use strict;
+use warnings;
+
 # ABSTRACT: Get the latest or previous version of an RSS feed
 
 
-use strict;
-use warnings;
-use feature qw< :5.14 >;
+package App::Rssfilter::Feed;
+{
+  $App::Rssfilter::Feed::VERSION = '0.0.1_3'; # TRIAL
+}
 
-package App::Rssfilter::Feed {
-    use Moo;
-    with 'App::Rssfilter::Logger';
-    use Method::Signatures;
-
-
-
-    has name => (
-        is => 'ro',
-        required => 1,
-    );
+use Moo;
+with 'App::Rssfilter::Logger';
+use Method::Signatures;
 
 
-    has url => (
-        is => 'ro',
-        required => 1,
-    );
+
+has name => (
+    is => 'ro',
+    required => 1,
+);
 
 
-    has rules => (
-        is => 'ro',
-        default => sub { [] },
-    );
+has url => (
+    is => 'ro',
+    required => 1,
+);
 
 
-    has user_agent => (
-        is => 'ro',
-        default => sub { use Mojo::UserAgent; Mojo::UserAgent->new },
-    );
+has rules => (
+    is => 'ro',
+    default => sub { [] },
+);
 
 
-    has storage => (
-        is => 'lazy',
-        default => method {
-            use App::Rssfilter::Feed::Storage;
-            App::Rssfilter::Feed::Storage->new(
-                name  => $self->name,
-            );
-        },
-    );
-
-    method BUILDARGS( %options ) {
-        if( 1 == keys %options ) {
-            @options{ 'name', 'url' } = each %options;
-            delete $options{ $options{ name } };
-        }
-        return { %options };
-    }
+has user_agent => (
+    is => 'ro',
+    default => sub { use Mojo::UserAgent; Mojo::UserAgent->new },
+);
 
 
-    method add_rule( $rule, @rule_options ) {
-        use Scalar::Util qw< blessed >;
-        if ( ! blessed( $rule ) or ! $rule->isa( 'App::Rssfilter::Rule' ) ) {
-            unshift @rule_options, $rule; # restore original @_
-            use App::Rssfilter::Rule;
-            $rule = App::Rssfilter::Rule->new( @rule_options );
-        }
-
-        push $self->rules, $rule;
-        return $self;
-    }
-
-
-    method update( ArrayRef :$rules = [], :$storage = $self->storage ) {
-        $storage = $storage->set_name( $self->name );
-        my $old = $storage->load_existing;
-
-        my $headers = {};
-        if( defined( my $last_modified = $storage->last_modified ) ) {
-            $self->logger->debug( "last update was $last_modified" );
-            ${ $headers }{ 'If-Modified-Since' } = $last_modified;
-        }
-
-        my $latest = $self->user_agent->get(
-            $self->url,
-            $headers
+has storage => (
+    is => 'lazy',
+    default => method {
+        use App::Rssfilter::Feed::Storage;
+        App::Rssfilter::Feed::Storage->new(
+            name  => $self->name,
         );
+    },
+);
 
-        my @rules = @{ $rules };
-        push @rules, @{ $self->rules };
+method BUILDARGS( %options ) {
+    if( 1 == keys %options ) {
+        @options{ 'name', 'url' } = each %options;
+        delete $options{ $options{ name } };
+    }
+    return { %options };
+}
 
-        if ( 200 == $latest->res->code ) {
-            $self->logger->debug( 'found a newer feed!' );
-            $self->logger->debug( 'filtering '. $self->name );
-            my $new = $latest->res->dom;
-            for my $rule ( @rules ) {
-                $self->logger->debugf( 'applying %s => %s to new feed', $rule->condition_name, $rule->action_name ) if $self->logger->is_debug;
-                $rule->constrain( $new );
-            }
-            $storage->save_feed( $new );
-        }
 
-        if ( defined $old ) {
-            $self->logger->debug( 'collecting guids from old feed' );
-            for my $rule ( @rules ) {
-                $rule->constrain( $old );
-            }
-        }
+method add_rule( $rule, @rule_options ) {
+    use Scalar::Util qw< blessed >;
+    if ( ! blessed( $rule ) or ! $rule->isa( 'App::Rssfilter::Rule' ) ) {
+        unshift @rule_options, $rule; # restore original @_
+        use App::Rssfilter::Rule;
+        $rule = App::Rssfilter::Rule->new( @rule_options );
     }
 
+    push @{ $self->rules }, $rule;
+    return $self;
+}
+
+
+method update( ArrayRef :$rules = [], :$storage = $self->storage ) {
+    $storage = $storage->set_name( $self->name );
+    my $old = $storage->load_existing;
+
+    my $headers = {};
+    if( defined( my $last_modified = $storage->last_modified ) ) {
+        $self->logger->debug( "last update was $last_modified" );
+        ${ $headers }{ 'If-Modified-Since' } = $last_modified;
+    }
+
+    my $latest = $self->user_agent->get(
+        $self->url,
+        $headers
+    );
+
+    my @rules = @{ $rules };
+    push @rules, @{ $self->rules };
+
+    if ( 200 == $latest->res->code ) {
+        $self->logger->debug( 'found a newer feed!' );
+        $self->logger->debug( 'filtering '. $self->name );
+        my $new = $latest->res->dom;
+        for my $rule ( @rules ) {
+            $self->logger->debugf( 'applying %s => %s to new feed', $rule->condition_name, $rule->action_name ) if $self->logger->is_debug;
+            $rule->constrain( $new );
+        }
+        $storage->save_feed( $new );
+    }
+
+    if ( defined $old ) {
+        $self->logger->debug( 'collecting guids from old feed' );
+        for my $rule ( @rules ) {
+            $rule->constrain( $old );
+        }
+    }
 }
 
 1;
-{
-  $App::Rssfilter::Feed::VERSION = '0.0.1_2';
-}
 
 __END__
 
@@ -122,7 +120,7 @@ App::Rssfilter::Feed - Get the latest or previous version of an RSS feed
 
 =head1 VERSION
 
-version 0.0.1_2
+version 0.0.1_3
 
 =head1 SYNOPSIS
 

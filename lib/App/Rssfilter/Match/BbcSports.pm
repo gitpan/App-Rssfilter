@@ -1,23 +1,21 @@
-use strict;
-use warnings;
-use feature qw( :5.14 );
-
 # ABSTRACT: match a BBC sport RSS item
 
+use strict;
+use warnings;
 
-package App::Rssfilter::Match::BbcSports {
-    use Method::Signatures;
+
+package App::Rssfilter::Match::BbcSports;
+{
+  $App::Rssfilter::Match::BbcSports::VERSION = '0.0.1_3'; # TRIAL
+}
+use Method::Signatures;
 
 
-    func match ( $item ) {
-        return $item->guid->text =~ qr{ www [.] bbc [.] co [.] uk / sport [1]? / }xms;
-    }
+func match ( $item ) {
+    return $item->guid->text =~ qr{ www [.] bbc [.] co [.] uk / sport [1]? / }xms;
 }
 
 1;
-{
-  $App::Rssfilter::Match::BbcSports::VERSION = '0.0.1_2';
-}
 
 __END__
 
@@ -29,7 +27,7 @@ App::Rssfilter::Match::BbcSports - match a BBC sport RSS item
 
 =head1 VERSION
 
-version 0.0.1_2
+version 0.0.1_3
 
 =head1 SYNOPSIS
 
